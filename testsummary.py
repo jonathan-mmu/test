@@ -1,126 +1,18 @@
-def main_menu():
-    while True:
-        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        print("       🐈  🐾MAIN MENU🐾  🐈")
-        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        print("1. Start New Game")
-        print("2. Load Saved Game")
-        print("---------------------------------------")
-        
-        choice = input("Please choose an option: ")
+def testsummary():
+    global attributes
+    global stats
+    global inventory
 
-        if choice == "1":
-            NewGame()
-            break
-        elif choice == "2":
-            LoadGame()
-            break
-        else:
-            print("Invalid choice. Please enter a number either 1 or 2.")
-    
-# SAVE GAME FUNC
-def save_game_txt(PlayerName, game_state, filename = "databases/PlayersData.txt"):
-    with open(filename, 'a') as file:  
-        file.write(f"Player: {PlayerName}\n")
-        for key, value in game_state.items():
-            file.write(f"{key}: {value}\n")
-        # Blank line to separate data
-        file.write("\n")
-
-# LOAD GAME FUNC
-def load_game_txt(PlayerName, password, filename = "databases/PlayersData.txt"):
-    game_state = {}
-    with open(filename, 'r') as file:
+    with open("testsummary.txt", "r") as file:
         lines = file.readlines()
-        player_found = False
-        for line in lines:
 
-            if line.startswith("Player:"):
+        attributes = eval(lines[1])
+        stats = eval(lines[2])
+        inventory = eval(lines[3])
+        
+        display_attributes()
+        display_stats()
 
-                # (": ")[1] = player's name
-                CurrentPlayer = line.split(": ")[1].strip()
-                if CurrentPlayer == PlayerName:
-                    # True = data found // False = ignore
-                    player_found = True
-                else:
-                    player_found = False
-
-            elif player_found:
-                # Empty line to indicate the end of a player data
-                if line.strip() == "":
-                    break  
-                key, value = line.strip().split(': ')
-                game_state[key] = value
-
-    if game_state.get('password') == password:
-        return game_state
-    else:
-        print("Incorrect name or password.")
-        return None
-
-def NewGame():
-    print("Starting a new game...")
-    PlayerName = input("Enter Your Name: ")
-    password = input("Create a new password: ")
-    game_state = {
-        'password': password,
-    }
-    save_game_txt(PlayerName, game_state)
-    print("Game saved successfully.")
-    print(f"Hello, {PlayerName}!")
-
-import sys
-
-def LoadGame():
-    attempts = 5
-    while attempts > 0:         
-        print("Loading saved game...")
-        PlayerName = input("Enter your name: ")
-        password = input("Enter your password: ")
-
-        # Correct input
-        game_state = load_game_txt(PlayerName, password)
-        if game_state:
-            print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-            print(f"  😸 Hello again, {PlayerName}! 😸")
-            print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-            print("1. View previous summary")
-            print("2. Play a new game")
-            print("---------------------------------------")
-
-            valid = False
-            ValidAttempts = 3
-
-            while not valid and ValidAttempts > 0:
-                choice2 = input("Please choose an option: ")
-                choice2 = int(choice2)
-                if choice2 in [1, 2]:
-                    valid = True
-                else:
-                    print("Invalid choice. Please enter a number either 1 or 2.")
-                    ValidAttempts -= 1
-
-            if valid:
-                if choice2 == 1:
-                    summary()
-                    sys.exit()
-                    return None
-                elif choice2 == 2:
-                    break
-            else:
-                print("Invalid choice. Please enter a number either 1 or 2.")              
-
-        # Incorrect input
-        else:
-            attempts -= 1
-            print(f"You have {attempts} attempts left.")
-            if attempts == 0:
-                print("Maximum attempts reached.")
-                print("Exiting game... Goodbye!")
-                sys.exit()
-
-def summary():
-    print("Summary of your previous game...")
     return
 
 # Initialize attributes, stats, and inventory
@@ -143,6 +35,7 @@ attribute_values = {
 
 # Main function to orchestrate the game
 def main():
+    testsummary()
     introduction()
     get_attributes()
     set_lim()
@@ -400,5 +293,4 @@ def ending():
     return
 
 # Run the program
-main_menu()
 main()
