@@ -1,4 +1,1 @@
-{"Username": "ali", "Password": 1234}
-{"Name": "test", "Gender": "Male", "Age": 3, "Color": "White", "Size": "Fat", "Personality": "Lazy"}
-{"Health": {"Current": 1, "Max": 100}, "Energy": {"Current": 2, "Max": 100}, "Hunger": {"Current": 3, "Max": 100}, "Mood": "Neutral", "Affection": {"Current": 4, "Max": 100}}
-{"Catnip": False, "Treats": True, "Yarnball": False, "Mouse Toy": True}
+
