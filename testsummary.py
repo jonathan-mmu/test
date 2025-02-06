@@ -25,32 +25,42 @@ attribute_values = {
 # Main function to orchestrate the game
 def main():
     introduction()
+    press_enter_to_continue()
+
     main_menu()
+    press_enter_to_continue()
+
     get_attributes()
     set_lim()
-    gameplay()
-    display_attributes()
-    display_stats()
     press_enter_to_continue()
-    the_end()
+
+    gameplay()
+    press_enter_to_continue()
+
     ending()
+    exit()
     return
 
 # plot introduction
 def introduction():
-    print("Welcome to Purrfect Life, a Cat Simulator")
+    print("")
+    print_sep3()
+    print("Welcome to Purrfect Life, a Cat Simulator".center(44))
+    print_sep3()
+
     #add a plot
+    
     return
 
 def main_menu():
+    print_sep1()
+    print("🐈  🐾MAIN MENU🐾  🐈".center(40))
+    print_sep1()
+    print("1. Create New Account")
+    print("2. Load Existing Account")
+    print_sep2()
+
     while True:
-        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        print("       🐈  🐾MAIN MENU🐾  🐈")
-        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        print("1. Create New Account")
-        print("2. Load Existing Account")
-        print("---------------------------------------")
-        
         choice = input("Please choose an option: ")
 
         if choice == "1":
@@ -60,31 +70,29 @@ def main_menu():
             LoadAcc()
             break
         else:
-            print("Invalid choice. Please enter a number either 1 or 2.")
+            print("❌ Invalid choice. Please enter a number either 1 or 2.")
         
     return
 
 def NewAcc():
-    global username
-    global password
+    global username, password
 
-    print("Starting a new game...")
+    print("\nStarting a new game...")
+    press_enter_to_continue()
     while True:
         PlayerName = input("Enter your username: ")
         password = input("Create a new password: ")
-        if (len(PlayerName) > 0) & (len(password) > 0):
+        if (0 < len(PlayerName) < 24) & (len(password) > 0):
             break
         else:
-            print("ERROR: Please enter a valid username and password!")
+            print("❌ ERROR: Please enter a valid username and password!")
 
-    game_state = {
-        'password': password,
-    }
+    game_state = {'password': password}
 
     username = PlayerName
     password = password
     create_acc(PlayerName, game_state)
-    print("Account created successfully.")
+    print("\nAccount created successfully.")
     print(f"Hello, {PlayerName}!")
     return
 
@@ -99,57 +107,63 @@ def create_acc(PlayerName, game_state, filename = "databases/PlayersData.txt"):
     return
 
 def LoadAcc():
-    global username
-    global password
+    global username, password
+
+    print("\nLoading existing account...")
+    press_enter_to_continue()
 
     attempts = 5
     while attempts > 0:         
-        print("Loading existing account...")
         PlayerName = input("Enter your username: ")
         password = input("Enter your password: ")
 
         # Correct input
         game_state = log_in_acc(PlayerName, password)
         if game_state:
-            print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            print_sep1()
             print(f"  😸 Hello again, {PlayerName}! 😸")
-            print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            print_sep1()
             print("1. View previous summary")
             print("2. Play a new game")
-            print("---------------------------------------")
+            print_sep2()
 
-            valid = False
             ValidAttempts = 3
-
-            while not valid and ValidAttempts > 0:
+            while ValidAttempts > 0:
                 choice2 = input("Please choose an option: ")
-                choice2 = int(choice2)
-                if choice2 in [1, 2]:
-                    valid = True
-                else:
-                    print("Invalid choice. Please enter a number either 1 or 2.")
+                try:
+                    choice2 = int(choice2)
+                except:
+                    print("❌ Invalid choice. Please enter a number either 1 or 2.")
                     ValidAttempts -= 1
+                    print(f"You have {ValidAttempts} attempts left.")
+                    continue
 
-            if valid:
-                username = PlayerName
-                password = password
+                if choice2 in [1, 2]:
+                    username = PlayerName
+                    password = password
+                    if choice2 == 1:
+                        summary()
+                        exit()
+                    elif choice2 == 2:
+                        break 
 
-                if choice2 == 1:
-                    summary()
-                    sys.exit()
-                elif choice2 == 2:
-                    break
-            else:
-                print("Invalid choice. Please enter a number either 1 or 2.")              
+                print("❌ Invalid choice. Please enter a number either 1 or 2.")
+                ValidAttempts -= 1
+                print(f"You have {ValidAttempts} attempts left.") 
+
+            if ValidAttempts == 0:
+                print("\nMaximum attempts reached.")
+                print("Exiting game... Goodbye!")
+                exit()
 
         # Incorrect input
         else:
             attempts -= 1
             print(f"You have {attempts} attempts left.")
             if attempts == 0:
-                print("Maximum attempts reached.")
+                print("\nMaximum attempts reached.")
                 print("Exiting game... Goodbye!")
-                sys.exit()
+                exit()
     return
 
 # LOAD GAME FUNC
@@ -159,7 +173,6 @@ def log_in_acc(PlayerName, password, filename = "databases/PlayersData.txt"):
         lines = file.readlines()
         player_found = False
         for line in lines:
-
             if line.startswith("Player:"):
 
                 # (": ")[1] = player's name
@@ -179,7 +192,7 @@ def log_in_acc(PlayerName, password, filename = "databases/PlayersData.txt"):
     if game_state.get('password') == password:
         return game_state
     else:
-        print("Incorrect name or password.")
+        print("❌ ERROR: Incorrect name or password.")
         return None
 
 # Function to collect cat attributes
@@ -187,12 +200,12 @@ def get_attributes():
     global attributes
 
     while True:
-        attributes["Name"] = input("Name: ")
+        attributes["Name"] = input("Enter your cat's name: ")
         if len(attributes["Name"]) > 0:
             break
         else:
-            print("ERROR: Please enter a valid name!")
-            
+            print("❌ ERROR: Please enter a valid name!")
+
     attributes["Age"] = check_attributes("Age")
     attributes["Gender"] = check_attributes("Gender")
     attributes["Color"] = check_attributes("Color")
@@ -213,24 +226,23 @@ def check_attributes(attribute):
             try:
                 value = int(temp)
             except:
-                print(f"ERROR: Please enter an integer! ({'-'.join(values)})")
+                print(f"❌ ERROR: Please enter an integer! ({'-'.join(values)})")
                 continue
             else:
                 if int(values[0]) <= value <= int(values[1]):
                     return value
-            print(f"ERROR: Please enter a valid {attribute.lower()}! ({'-'.join(values)})")
+            print(f"❌ ERROR: Please enter a valid {attribute.lower()}! ({'-'.join(values)})")
 
         else:
             temp = str(input(f"Select your cat's {attribute} ({', '.join(values)}): "))
             for value in values:
                 if temp.lower() == value.lower():
                     return value
-            print(f"ERROR: Please enter a valid {attribute.lower()}! ({', '.join(values)})")
+            print(f"❌ ERROR: Please enter a valid {attribute.lower()}! ({', '.join(values)})")
 
 # Set the maximum limits and initialise stats based on age, size, personality
 def set_lim():
-    global attributes
-    global stats
+    global attributes, stats
 
     if (attributes["Age"] >= 15) | (attributes["Age"] <=2):
         stats["Health"]["Current"] -= 10
@@ -257,13 +269,14 @@ def gameplay():
     # Read game data 
     with open("databases/game_data.txt", "r") as file:
         lines = file.readlines()
-
         for i in range(0, len(lines), 5):
             statement = eval(lines[i])
             stats_adjustments = eval(lines[(i + 1)])
             inventory_adjustments = eval(lines[(i + 2)])
             results = eval(lines[(i + 3)])
+            print_sep2()
             print(statement)
+            print_sep2()
             while True:
                 action = get_action(1, len(results))
 
@@ -276,9 +289,10 @@ def gameplay():
                 update_stats(stats_adjustments[(action - 1)])
                 success = update_inventory(inventory_adjustments[(action - 1)])
                 if success: 
+                    print_sep2()
                     print(results[(action - 1)])
                 else:
-                    print("\nYou do NOT have the required items to carry out this action! Please select another action.")
+                    print("\n❌ You do NOT have the required items to carry out this action! Please select another action.")
                     continue
 
                 press_enter_to_continue()
@@ -288,7 +302,9 @@ def gameplay():
                 gameover = check_condition()
                 press_enter_to_continue()
                 if gameover:
-                    print("\nYou died.... \n---GAMEOVER---")
+                    save_summary()
+                    print("\nYou died....")
+                    print("-" * 18 + "GAMEOVER" + "-" * 18)
                     return
                 
                 break
@@ -296,11 +312,7 @@ def gameplay():
     return
 
 def save_summary():
-    global username
-    global password
-    global attributes
-    global stats
-    global inventory
+    global username, password, attributes, stats, inventory
 
     file = open("databases/PlayersData.txt", "r")
     lines = file.readlines()
@@ -326,10 +338,9 @@ def save_summary():
     return
 
 def summary():
-    global attributes
-    global stats
-    global inventory
+    global attributes, stats, inventory
 
+    print_sep2()
     print("Summary of your previous game...")
 
     with open("databases/PlayersData.txt", "r") as file:
@@ -356,7 +367,7 @@ def get_action(min, max):
 
         # Check if player wants to quit
         if action == 'q':
-            print("\nYou chose to quit the game. Here are your final stats:")
+            print("\nYou chose to quit the game.")
             return 0
         elif action.isdigit():
             action = int(action)
@@ -442,7 +453,9 @@ def check_condition():
 #display attributes
 def display_attributes():
     global attributes
-    print("\n📋 **Cat Attributes:**")
+
+    print_sep2()
+    print("📋 **Cat Attributes:**")
     for key, value in attributes.items():
         print(f"  🔹 {key}: {value}")
     return
@@ -450,7 +463,9 @@ def display_attributes():
 # display current stats/inventory
 def display_stats():
     global stats, inventory
-    print("\n🐾 **Summary of Your Cat** 🐾")
+
+    print_sep2()
+    print("🐾 **Summary of Your Cat** 🐾")
     # Display stats
     print("\n📊 **Current Stats:**")
     print(f"  ❤️ Health: {stats["Health"]["Current"]}/{stats["Health"]["Max"]}")
@@ -479,21 +494,42 @@ def display_stats():
         for item in owned_items:
             print(f"  ✅ {item}")
     else:
-        print("  ❌ No items collected.\n")
+        print("  ❌ No items collected.")
     
-    return
-
-def press_enter_to_continue():
-    input("\n🔹 Press Enter to continue...")
-    return
-
-def the_end():
-    input("\n ⭐The End... press enter to see results!")
+    print_sep2()
     return
 
 # Display the ending message
 def ending():
-    print("\n **Thank you for playing Purrfect Life!** ✨\n")
+    print_sep3()
+    input("⭐The End... press enter to see results!".center(44))
+    press_enter_to_continue()
+    display_attributes()
+    display_stats()
+    press_enter_to_continue()
+    print("**Thank you for playing Purrfect Life!** ✨".center(44))
+    return
+
+def exit():
+    print_sep3()
+    sys.exit()
+    return
+
+def press_enter_to_continue():
+    input("\n" + "🔹 Press Enter to continue... 🔹".center(40))
+    print("")
+    return
+
+def print_sep1():
+    print("~" * 44)
+    return
+
+def print_sep2():
+    print("-" * 44)
+    return
+
+def print_sep3():
+    print("=" * 44)
     return
 
 # Run the program
