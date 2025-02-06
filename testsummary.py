@@ -81,6 +81,11 @@ def NewAcc():
     press_enter_to_continue()
     while True:
         PlayerName = input("Enter your username: ")
+
+        # Check for duplicate username
+        if check_duplicate(PlayerName):
+            continue
+        
         password = input("Create a new password: ")
         if (0 < len(PlayerName) < 24) & (len(password) > 0):
             break
@@ -127,34 +132,25 @@ def LoadAcc():
             print("2. Play a new game")
             print_sep2()
 
-            ValidAttempts = 3
-            while ValidAttempts > 0:
-                choice2 = input("Please choose an option: ")
+            while True:
                 try:
-                    choice2 = int(choice2)
-                except:
-                    print("❌ Invalid choice. Please enter a number either 1 or 2.")
-                    ValidAttempts -= 1
-                    print(f"You have {ValidAttempts} attempts left.")
-                    continue
+                    choice2 = int(input("Please choose an option: "))
+                    if choice2 in [1, 2]:
+                        break
+                    else:
+                        print("Invalid number. Please enter a number either 1 or 2.")
+                        continue
+                except ValueError:
+                    print("Integer only!!. Please enter a number either 1 or 2.")
+                    
+            username = PlayerName
+            password = password
 
-                if choice2 in [1, 2]:
-                    username = PlayerName
-                    password = password
-                    if choice2 == 1:
-                        summary()
-                        exit()
-                    elif choice2 == 2:
-                        break 
-
-                print("❌ Invalid choice. Please enter a number either 1 or 2.")
-                ValidAttempts -= 1
-                print(f"You have {ValidAttempts} attempts left.") 
-
-            if ValidAttempts == 0:
-                print("\nMaximum attempts reached.")
-                print("Exiting game... Goodbye!")
+            if choice2 == 1:
+                summary()
                 exit()
+            elif choice2 == 2:
+                break        
 
         # Incorrect input
         else:
@@ -194,6 +190,18 @@ def log_in_acc(PlayerName, password, filename = "databases/PlayersData.txt"):
     else:
         print("❌ ERROR: Incorrect name or password.")
         return None
+    
+# CHECK DUPLICATE FUNC
+def check_duplicate(PlayerName, filename = "databases/PlayersData.txt"):
+    with open(filename, 'r') as file:
+        lines = file.readlines()
+        for line in lines:
+            if line.startswith("Player:"):
+                CurrentPlayer = line.split(": ")[1].strip()
+                if CurrentPlayer == PlayerName:
+                    print("Account already exists. Please enter a different username.")
+                    return True
+    return False
 
 # Function to collect cat attributes
 def get_attributes():
