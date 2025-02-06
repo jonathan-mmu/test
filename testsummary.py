@@ -121,40 +121,6 @@ def set_lim():
 # gameplay
 def gameplay():
     # Read game data 
-    with open("databases/game_data.txt", "r") as file:
-        lines = file.readlines()
-
-        for i in range(0, len(lines), 5):
-            statement = eval(lines[i])
-            stats_adjustments = eval(lines[(i + 1)])
-            inventory_adjustments = eval(lines[(i + 2)])
-            results = eval(lines[(i + 3)])
-            print(statement)
-            while True:
-                action = get_action(1, len(results))
-                # exit if user wants to quit
-                if action == 0:
-                    return
-
-                update_stats(stats_adjustments[(action - 1)])
-                success = update_inventory(inventory_adjustments[(action - 1)])
-                if success: 
-                    print(results[(action - 1)])
-                else:
-                    print("\nYou do NOT have the required items to carry out this action! Please select another action.")
-                    continue
-
-                press_enter_to_continue()
-                display_stats()
-
-                # check whether cat alive or not
-                gameover = check_condition()
-                press_enter_to_continue()
-                if gameover:
-                    print("\nYou died.... \n---GAMEOVER---")
-                    return
-                
-                break
                 
     return
 
