@@ -35,10 +35,13 @@ attribute_values = {
 
 # Main function to orchestrate the game
 def main():
-    testsummary()
     introduction()
-    get_attributes()
-    set_lim()
+    action = gettest()
+    if action == "2":
+        testsummary()
+    else:
+        get_attributes()
+        set_lim()
     gameplay()
     display_attributes()
     display_stats()
@@ -46,6 +49,11 @@ def main():
     the_end()
     ending()
     return
+
+def gettest():
+    print("1. gameplay \n2.View previous sum?")
+    act = input("action:")
+    return act
 
 # plot introduction
 def introduction():
@@ -121,6 +129,48 @@ def set_lim():
 # gameplay
 def gameplay():
     # Read game data 
+    with open("databases/game_data.txt", "r") as file:
+        lines = file.readlines()
+
+        for i in range(0, len(lines), 5):
+            statement = eval(lines[i])
+            stats_adjustments = eval(lines[(i + 1)])
+            inventory_adjustments = eval(lines[(i + 2)])
+            results = eval(lines[(i + 3)])
+            print(statement)
+            while True:
+                action = get_action(1, len(results))
+                # exit if user wants to quit
+                if action == 0:
+
+                    # SAVE SUMMARY
+                    with open("testsummary.txt", "a") as file:
+                        file.write("Username-placeholder")
+                        file.write("\n" + str(attributes))
+                        file.write("\n" + str(stats))
+                        file.write("\n" + str(inventory))
+                        file.write("\n\n")
+                    return
+
+                update_stats(stats_adjustments[(action - 1)])
+                success = update_inventory(inventory_adjustments[(action - 1)])
+                if success: 
+                    print(results[(action - 1)])
+                else:
+                    print("\nYou do NOT have the required items to carry out this action! Please select another action.")
+                    continue
+                
+                press_enter_to_continue()
+                display_stats()
+
+                # check whether cat alive or not
+                gameover = check_condition()
+                if gameover:
+                    print("You died.... \n---GAMEOVER---")
+                    return
+
+                press_enter_to_continue()
+                break
                 
     return
 
@@ -151,15 +201,15 @@ def update_stats(stats_adjustment):
 
     # dynamic mood
     if stats["Hunger"]["Current"] > 50:
-        stats["Mood"] = "Hungry 😾"
+        stats["Mood"] = "Hungry"
     elif stats["Energy"]["Current"] < 40:
-        stats["Mood"] = "Tired 😴"
+        stats["Mood"] = "Tired"
     elif stats["Health"]["Current"] < 30:
-        stats["Mood"] = "Sick 🤢"
+        stats["Mood"] = "Sick"
     elif stats["Affection"]["Current"] > 70 and stats["Energy"]["Current"] > 50:
-        stats["Mood"] = "Happy 😺"
+        stats["Mood"] = "Happy"
     else:
-        stats["Mood"] = "Neutral 😺"
+        stats["Mood"] = "Neutral"
 
 # Ensure stats stay within bounds
 def check_lim(value, min, max):
@@ -230,7 +280,19 @@ def display_stats():
     print(f"  ❤️ Health: {stats['Health']['Current']}/{stats['Health']['Max']}")
     print(f"  ⚡ Energy: {stats['Energy']['Current']}/{stats['Energy']['Max']}")
     print(f"  🍗 Hunger: {stats['Hunger']['Current']}/{stats['Hunger']['Max']}")
-    print(f"  😺 Mood: **{stats['Mood']}**")
+
+    if stats["Mood"] == "Hungry":
+        emoji = "😾"
+    elif stats["Mood"] == "Tired":
+        emoji = "😴"
+    elif stats["Mood"] == "Sick":
+        emoji = "🤢"
+    elif stats["Mood"] == "Happy":
+        emoji = "😺"
+    else:
+        emoji = "😺"
+
+    print(f"  😺 Mood: **{stats['Mood']} {emoji}**")
     print(f"  💕 Affection: {stats['Affection']['Current']}/{stats['Affection']['Max']}")
 
     # Display inventory (show only acquired items)
