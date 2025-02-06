@@ -1,19 +1,8 @@
-def testsummary():
-    global attributes
-    global stats
-    global inventory
+import sys
 
-    with open("testsummary.txt", "r") as file:
-        lines = file.readlines()
-
-        attributes = eval(lines[1])
-        stats = eval(lines[2])
-        inventory = eval(lines[3])
-        
-        display_attributes()
-        display_stats()
-
-    return
+# Declare username, password
+username = None
+password = None
 
 # Initialize attributes, stats, and inventory
 attributes = {"Name": None, "Gender": None, "Age": None, "Color": None, "Size": None, "Personality": None}
@@ -36,12 +25,9 @@ attribute_values = {
 # Main function to orchestrate the game
 def main():
     introduction()
-    action = gettest()
-    if action == "2":
-        testsummary()
-    else:
-        get_attributes()
-        set_lim()
+    main_menu()
+    get_attributes()
+    set_lim()
     gameplay()
     display_attributes()
     display_stats()
@@ -50,23 +36,163 @@ def main():
     ending()
     return
 
-def gettest():
-    print("1. gameplay \n2.View previous sum?")
-    act = input("action:")
-    return act
-
 # plot introduction
 def introduction():
     print("Welcome to Purrfect Life, a Cat Simulator")
     #add a plot
+    return
+
+def main_menu():
+    while True:
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        print("       🐈  🐾MAIN MENU🐾  🐈")
+        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        print("1. Create New Account")
+        print("2. Load Existing Account")
+        print("---------------------------------------")
+        
+        choice = input("Please choose an option: ")
+
+        if choice == "1":
+            NewAcc()
+            break
+        elif choice == "2":
+            LoadAcc()
+            break
+        else:
+            print("Invalid choice. Please enter a number either 1 or 2.")
+        
+    return
+
+def NewAcc():
+    global username
+    global password
+
+    print("Starting a new game...")
+    while True:
+        PlayerName = input("Enter your username: ")
+        password = input("Create a new password: ")
+        if (len(PlayerName) > 0) & (len(password) > 0):
+            break
+        else:
+            print("ERROR: Please enter a valid username and password!")
+
+    game_state = {
+        'password': password,
+    }
+
+    username = PlayerName
+    password = password
+    create_acc(PlayerName, game_state)
+    print("Account created successfully.")
+    print(f"Hello, {PlayerName}!")
+    return
+
+def create_acc(PlayerName, game_state, filename = "databases/PlayersData.txt"):
+    with open(filename, 'a') as file:  
+        file.write(f"Player: {PlayerName}")
+        for key, value in game_state.items():
+            file.write(f"\n{key}: {value}")
+        for i in range(4):
+            file.write("\n")
 
     return
+
+def LoadAcc():
+    global username
+    global password
+
+    attempts = 5
+    while attempts > 0:         
+        print("Loading existing account...")
+        PlayerName = input("Enter your username: ")
+        password = input("Enter your password: ")
+
+        # Correct input
+        game_state = log_in_acc(PlayerName, password)
+        if game_state:
+            print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            print(f"  😸 Hello again, {PlayerName}! 😸")
+            print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            print("1. View previous summary")
+            print("2. Play a new game")
+            print("---------------------------------------")
+
+            valid = False
+            ValidAttempts = 3
+
+            while not valid and ValidAttempts > 0:
+                choice2 = input("Please choose an option: ")
+                choice2 = int(choice2)
+                if choice2 in [1, 2]:
+                    valid = True
+                else:
+                    print("Invalid choice. Please enter a number either 1 or 2.")
+                    ValidAttempts -= 1
+
+            if valid:
+                username = PlayerName
+                password = password
+
+                if choice2 == 1:
+                    summary()
+                    sys.exit()
+                elif choice2 == 2:
+                    break
+            else:
+                print("Invalid choice. Please enter a number either 1 or 2.")              
+
+        # Incorrect input
+        else:
+            attempts -= 1
+            print(f"You have {attempts} attempts left.")
+            if attempts == 0:
+                print("Maximum attempts reached.")
+                print("Exiting game... Goodbye!")
+                sys.exit()
+    return
+
+# LOAD GAME FUNC
+def log_in_acc(PlayerName, password, filename = "databases/PlayersData.txt"):
+    game_state = {}
+    with open(filename, 'r') as file:
+        lines = file.readlines()
+        player_found = False
+        for line in lines:
+
+            if line.startswith("Player:"):
+
+                # (": ")[1] = player's name
+                CurrentPlayer = line.split(": ")[1].strip()
+                if CurrentPlayer == PlayerName:
+                    # True = data found // False = ignore
+                    player_found = True
+                else:
+                    player_found = False
+
+            elif player_found:
+                # Get password
+                key, value = line.strip().split(': ')
+                game_state[key] = value
+                break
+
+    if game_state.get('password') == password:
+        return game_state
+    else:
+        print("Incorrect name or password.")
+        return None
 
 # Function to collect cat attributes
 def get_attributes():
     global attributes
 
-    attributes["Name"] = input("Name: ")
+    while True:
+        attributes["Name"] = input("Name: ")
+        if len(attributes["Name"]) > 0:
+            break
+        else:
+            print("ERROR: Please enter a valid name!")
+            
     attributes["Age"] = check_attributes("Age")
     attributes["Gender"] = check_attributes("Gender")
     attributes["Color"] = check_attributes("Color")
@@ -107,22 +233,22 @@ def set_lim():
     global stats
 
     if (attributes["Age"] >= 15) | (attributes["Age"] <=2):
-        stats["Health"]["Current"] -= 20
-        stats["Health"]["Max"] -= 20
+        stats["Health"]["Current"] -= 10
+        stats["Health"]["Max"] -= 10
 
     if attributes["Size"] == "Fat":
         stats["Health"]["Max"] -= 10
         stats["Hunger"]["Max"] += 10
     else:
-        stats["Hunger"]["Current"] += 20
+        stats["Hunger"]["Current"] += 10
         stats["Hunger"]["Max"] -= 10
 
     if attributes["Personality"] == "Playful":
-        stats["Energy"]["Current"] += 20
-        stats["Energy"]["Max"] += 20
+        stats["Energy"]["Current"] += 10
+        stats["Energy"]["Max"] += 10
     elif attributes["Personality"] == "Lazy":
-        stats["Energy"]["Current"] -= 20
-        stats["Energy"]["Max"] -= 20
+        stats["Energy"]["Current"] -= 10
+        stats["Energy"]["Max"] -= 10
 
     return
 
@@ -140,16 +266,11 @@ def gameplay():
             print(statement)
             while True:
                 action = get_action(1, len(results))
+
                 # exit if user wants to quit
                 if action == 0:
-
                     # SAVE SUMMARY
-                    with open("testsummary.txt", "a") as file:
-                        file.write("Username-placeholder")
-                        file.write("\n" + str(attributes))
-                        file.write("\n" + str(stats))
-                        file.write("\n" + str(inventory))
-                        file.write("\n\n")
+                    save_summary()
                     return
 
                 update_stats(stats_adjustments[(action - 1)])
@@ -159,19 +280,74 @@ def gameplay():
                 else:
                     print("\nYou do NOT have the required items to carry out this action! Please select another action.")
                     continue
-                
+
                 press_enter_to_continue()
                 display_stats()
 
                 # check whether cat alive or not
                 gameover = check_condition()
-                if gameover:
-                    print("You died.... \n---GAMEOVER---")
-                    return
-
                 press_enter_to_continue()
+                if gameover:
+                    print("\nYou died.... \n---GAMEOVER---")
+                    return
+                
                 break
                 
+    return
+
+def save_summary():
+    global username
+    global password
+    global attributes
+    global stats
+    global inventory
+
+    file = open("databases/PlayersData.txt", "r")
+    lines = file.readlines()
+
+    for i in range(len(lines)):
+        # Find corresponding username and password
+        if lines[i].startswith("Player:"):
+            CurrentPlayer = lines[i].split(": ")[1].strip()
+            CurrentPassword = lines[(i + 1)].split(": ")[1].strip()
+            if (CurrentPlayer == username) & ( CurrentPassword == password):
+                # Update game data 
+                lines[(i + 2)] = (str(attributes))
+                lines[(i + 3)] = ("\n" + str(stats))
+                lines[(i + 4)] = ("\n" + str(inventory) + "\n" + "\n")
+                break
+    
+    file.close
+
+    # Overwrite file with new data
+    with open("databases/PlayersData.txt", "w") as file:
+        file.writelines(lines)
+
+    return
+
+def summary():
+    global attributes
+    global stats
+    global inventory
+
+    print("Summary of your previous game...")
+
+    with open("databases/PlayersData.txt", "r") as file:
+        lines = file.readlines()
+
+        for i in range(len(lines)):
+            # Find corresponding username and password
+            if lines[i].startswith("Player:"):
+                CurrentPlayer = lines[i].split(": ")[1].strip()
+                if (CurrentPlayer == username) & (lines[(i + 1)].split(": ")[1].strip() == password):
+                    # Update summary
+                    attributes = eval(lines[(i + 2)])
+                    stats = eval(lines[(i + 3)])
+                    inventory = eval(lines[(i + 4)])
+                    break
+
+    display_attributes()
+    display_stats()
     return
 
 def get_action(min, max):
@@ -277,9 +453,9 @@ def display_stats():
     print("\n🐾 **Summary of Your Cat** 🐾")
     # Display stats
     print("\n📊 **Current Stats:**")
-    print(f"  ❤️ Health: {stats['Health']['Current']}/{stats['Health']['Max']}")
-    print(f"  ⚡ Energy: {stats['Energy']['Current']}/{stats['Energy']['Max']}")
-    print(f"  🍗 Hunger: {stats['Hunger']['Current']}/{stats['Hunger']['Max']}")
+    print(f"  ❤️ Health: {stats["Health"]["Current"]}/{stats["Health"]["Max"]}")
+    print(f"  ⚡ Energy: {stats["Energy"]["Current"]}/{stats["Energy"]["Max"]}")
+    print(f"  🍗 Hunger: {stats["Hunger"]["Current"]}/{stats["Hunger"]["Max"]}")
 
     if stats["Mood"] == "Hungry":
         emoji = "😾"
