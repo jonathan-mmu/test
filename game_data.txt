@@ -1,0 +1,49 @@
+"It's a Saturday morning, Emma, your owner is still asleep. Do you...\n\n1. Meow loudly until Emma wake up \n2. continue sleeping \n3. Lick Emma"
+[{"Health": -20, "Energy": -40, "Hunger": 40, "Affection": -20}, {"Health": 20, "Energy": 30, "Hunger": -50, "Affection": 20}, {"Health": -10, "Energy": 20, "Hunger": -20, "Affection": 30}]
+[None, None, {"Treats": True}]
+["\nEmma ignores you and continues sleeping, she did not feed you breakfast, you feel hungry.", "\nYou continue to sleep for another 2 hours, you wake up to the smell of food, its feeding time says Emma.", "\nEmma wakes up in a good mood, she went on and gave you a treat"]
+
+"You sneak out into the backyard! your curiosity got you...\n\n1. Chase a squirrel \n2. Climb the tree \n3. Dig in the dirt, hopefully find something"
+[{"Health": 30, "Energy": -20, "Hunger": 20, "Affection": 10}, {"Health": -10, "Energy": -10, "Hunger": -10, "Affection": -40}, {"Health": -10, "Energy": 20, "Hunger": -20, "Affection": 30}]
+[None, None, {"Mouse Toy": True}]
+["\nYou chased the squirrel down, turns out it's a mother of 4 babies so you let it go.", "\nYou climbed the tree now you are stuck, 2 hours later Emma found you and grounded you from going out.", "\nYou found your long lost mouse toy hidden deep in the dirt, Emma found you and thought it was cute. She helped clean your mouse toy."]
+
+"Emma went out to buy groceries, you are bored so you decided to explore around the house. \n\n1. you saw something move on the table, climb on it! \n2. Chase a bug on the floor \n3. Climb on the bookshelf"
+[{"Health": 0, "Energy": 10, "Hunger": 20, "Affection": -30}, {"Health": 20, "Energy": -30, "Hunger": -30, "Affection": 10}, {"Health": 30, "Energy": 20, "Hunger": 10, "Affection": 10}]
+[None, None, None]
+["\nYou jumped on the table and accidentally knock over a cup full of water, you jumped anxiously making a mess. Turns out, It's just the news paper moving.", "\nThe bug ran so fast but nothing is faster than you, you caught the bug but it is now dead. You eat it!", "\nTurns out that's the good spot for a nap, you dose off to sleep so quick."]
+
+"Someone is on the door, Emma is back! Emma opens the door and you see the big world outside. \n\n1. Run outside \n2. Meow at Emma \n3. Bring your mouse toy to Emma"
+[{"Health": -20, "Energy": -70, "Hunger": -20, "Affection": -30}, {"Health": 0, "Energy": -30, "Hunger": -20, "Affection": 20}, {"Health": 0, "Energy": --10, "Hunger": -20, "Affection": 20}]
+[None, {"Yarnball": True}, None]
+["\n You went out for a long walk, a stranger gave you food.", "\nYayy, Emma bought you a new yarnball", "\nEmma played the mouse toy with you, you enjoyed it really much."]
+
+"You look outside the window, wondering why the sky look so dark. Suddenly, a loud thunder strikes in front of you. \n\n1. Hide under Emma's leg \n2. Hide under the sofa \n3. Meow loudly"
+[{"Health": 0, "Energy": 5, "Hunger": 10, "Affection": 20}, {"Health": 0, "Energy": 15, "Hunger": -20, "Affection": 10}, {"Health": 5, "Energy": 20, "Hunger": -30, "Affection": 20}]
+[None, None, {"Catnip": True}]
+["\n You hide under Emma's leg, Emma comforts you.", "\nEmma saw you under the sofa, she gave you treats to lure you out of the sofa.", "\nEmma heard you meow, gave you some catnip and pours milk for you to drink."]
+
+"Emma is reading a book, you want to get her attention \n\n1. Rub your body against Emma's leg \n2. Go up to Emma ,rest your head on her lap \n3. Knock the cup of water on her table"
+[{"Health": 0, "Energy": 5, "Hunger": 10, "Affection": 10}, {"Health": 10, "Energy": -30, "Hunger": -20, "Affection": 10}, {"Health": 5, "Energy": 0, "Hunger": -30, "Affection": -40}]
+[None, {"Yarnball": True}, {"Treats": False}]
+["\n You got some pats from Emma!", "\nYou look so cute, Emma put down her book and decided to play yarnball with you", "\nEmma got up angry, no more treats for the day"]
+
+"Emma let you out to the garden you saw a strange cat wondering around the garden, can you befriend it? \n\n1. sneak up on the strange cat to sniff it \n2. Meow to get the strange cat's attention, offer your mouse toy to the cat. \n3. Go up to the strange cat, bring the cat to your bowl full of milk."
+[{"Health": 5, "Energy": 5, "Hunger": 10, "Affection": -20}, {"Health": 5, "Energy": 5, "Hunger": -20, "Affection": -5}, {"Health": 5, "Energy": 10, "Hunger": -30, "Affection": 10}]
+[None, {"Mouse Toy": False},None]
+["\n Too bad, the strange cat is frighten and ran away!", "\nThe strange cat slowly warmed up to you and both of you played the mouse toy together and became best friends. Sadly you forgot to bring back your nouse toy...", "\nTurns out the cat was not strange at all, it was just hungry, it thank you and both of you became best friends."]
+
+"The night is approaching, suddenly the fish in the tank looks so delicious \n\n1. Climb onto the fish tank, use your paw to play with the fish. \n2. Walk up to Emma, bring her to your bowl and meow constantly. \n3. Self control!! You try to keep yourself calm by eating your cat food."
+[{"Health": -50, "Energy": -70, "Hunger": 60, "Affection": -40}, {"Health": 5, "Energy": 10, "Hunger": -10, "Affection": 10}, {"Health": -20, "Energy": 10, "Hunger": -5, "Affection": -20}]
+[None, {"Treats": True, "Catnip": True}, None]
+["\n MEOOOOWWWW! You slipped and drop into the fish tank, you get scolded by Emma.", "\nEmma followed you  to your bowl, she smiled and gave you catnip and treats.", "\n You cant eat your food peacefully, you mind is playing games with you, you start to see weird things."]
+
+"A mysterious red dot appears right next to you, Emma is holding a laser wanting to play with you! \n\n1. Follow it where ever it goes.\n2. This looks boring, continue to lay down.\n3. You got frighten by the red dot."
+[{"Health": 10, "Energy": 5, "Hunger": -20, "Affection": 10}, {"Health": 5, "Energy": 5, "Hunger": -10, "Affection": 20}, {"Health": 10, "Energy": 10, "Hunger": -10, "Affection": 10}]
+[{"Treats": True}, {"Mouse Toy": True}, None]
+["\n Emma is very proud of you, you got a treat for performing well!", "\nEmma took out a new toy, congrats! you got a new mouse toy!", "\nEmma felt bad, gave you milk to calm you down."]
+
+"Emma calls you from the bathroom... It's time for a bath \n\n1. Play with the rubberduckie in the bathtub.\n2. Nope, I am not going in! \n3. Make a fuss in the bathroom."
+[{"Health": 5, "Energy": 0, "Hunger": 5, "Affection": 10}, {"Health": -50, "Energy": -10, "Hunger": 0, "Affection": 0}, {"Health": 10, "Energy": 10, "Hunger": -10, "Affection": 10}]
+[{"Mouse Toy": True}, {"Treats": True}, None]
+["\n Everything went smooth and quick, Emma gave you a treat after the bath.", "\nEmma got frustrated, she gave up on bathing you. Now you are smelly and might have an ear infection!", "\nEmma brought your favorite mouse toy, you finally gave in for a bath."]
